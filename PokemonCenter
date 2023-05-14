@@ -1,0 +1,119 @@
+import java.util.Scanner;
+public class PokemonCenter {
+	private Scanner scanner;
+	public static void shop(Trainer Tr) {
+		int select, change_money;
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("============== < 포켓몬센터 > ==============");
+		System.out.println("트레이너의 소지금: %d원", Tr.trainerMoney);
+		System.out.println("몬스터볼 시세: 1000원\t\t포션 시세: 500원\t\t ");
+		System.out.println("\n원하는 활동의 숫자를 입력해주세요! ");
+		System.out.println("1. 몬스터볼 구매\n2. 포션 구매\n3. 몬스터볼 판매\n4. 포션 판매\n5. 포켓몬 회복\n0. 종료");
+		System.out.println("=========================================");
+		select = scanner.nextInt();
+		do {
+			switch (select) {
+				case 1:
+					change_money = buyMonsterBall(Tr.trainerMoney, Tr.trainerMonsterBall);
+					Tr.trainerMoney = change_money;
+					break;
+				case 2:
+					change_money = buyPotion(Tr.trainerMoney, Tr.trainerMonsterBall);
+					Tr.trainerMoney = change_money;
+					break;
+				case 3:
+					change_money = sellMonsterBall(Tr.trainerMoney, Tr.trainerMonsterBall);
+					Tr.trainerMoney = change_money;
+					break;
+				case 4:
+					change_money = sellPotion(Tr.trainerMoney, Tr.trainerMonsterBall);
+					Tr.trainerMoney = change_money;
+					break;
+				case 5:
+					allHeal(Tr.mypmonList);
+				case 0:
+					System.out.println("포켓몬 센터를 나갑니다. 다음에 또 이용해주세요!");
+					break;
+				default:
+					System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
+                break;
+			}
+		}while(true);
+	}
+	public int buyMonsterBall(int money, int ball) {
+		int select, change_money;
+		int max_ball = money/1000; // 최대구매가능한 몬스터볼 개수 계산(몬스터볼: 1000원)
+		scanner = new Scanner(System.in);
+		do {
+			System.out.printf("몇 개의 몬스터 볼을 구매하시겠습니까?(최대 %d개 구매가능)\n", max_ball);
+			select = scanner.nextInt();
+			if(select <= max_ball) {
+				change_money = money - select * 1000; // 구매 후 잔돈 계산 
+				break;
+			}
+			else {
+				System.out.println("소지금이 부족합니다! 다시 입력하세요!");
+			}
+		} while (true);
+		return change_money;
+	}
+	public int buyPotion(int money, int potion) {
+		int select, change_money;
+		int max_potion = money/500; // 최대구매가능한 포션 개수 계산(포션: 500원)
+		scanner = new Scanner(System.in);
+		do {
+			System.out.printf("몇 개의 포션을 구매하시겠습니까?(0 ~ %d개 구매가능)\n", max_potion);
+			select = scanner.nextInt();
+			if(select <= max_potion) {
+				change_money = money - select * 500; // 구매 후 잔돈 계산 
+				break;
+			}
+			else {
+				System.out.println("소지금이 부족합니다! 다시 입력하세요!");
+			}
+		} while (true);
+		return change_money;
+	}
+	public int sellMonsterBall(int money, int ball) {
+		int select, change_money;
+		scanner = new Scanner(System.in);
+		do {
+			System.out.printf("몇 개의 몬스터볼을 판매하시겠습니까?(0 ~ %d개 판가능)\n", ball);
+			select = scanner.nextInt();
+			if(select <= ball) {
+				change_money = money + select * 1000; // 판매 후 소지금 계산 
+				break;
+			}
+			else {
+				System.out.println("보유한 몬스터볼 개수보다 많이 판매할 수 없습니다! 다시 입력하세요!");
+			}
+		} while (true);
+		return change_money;
+	}
+	public int sellPotion(int money, int potion) {
+		int select, change_money;
+		scanner = new Scanner(System.in);
+		do {
+			System.out.printf("몇 개의 포션을 판매하시겠습니까?(0 ~ %d개 판가능)\n", potion);
+			select = scanner.nextInt();
+			if(select <= potion) {
+				change_money = money + select * 500; // 판매 후 소지금 계산 
+				break;
+			}
+			else {
+				System.out.println("보유한 포션 개수보다 많이 판매할 수 없습니다! 다시 입력하세요!");
+			}
+		} while (true);
+		return change_money;
+	}
+	public void allHeal(Pokemon[] mPm) {
+		for(int i = 0; i < mPm.length; i++) {
+			int maxHp = mPm[i].getpmonMaxHp();
+			System.out.println("%s의 현재 체력 %d를 최대 체력인 %d로 회복하겠습니다!...완료!", 
+					mPm[i].getpmonName(), mPm[i].getpmonHp(), mPm[i].getpmonMaxHp());
+			mPm[i].setHp(maxHp);
+		}
+		System.out.println("보유하신 포켓몬 %d마리 포켓몬들의 체력을 모두 회복했습니다!", mPm.length);
+	}
+
+}
