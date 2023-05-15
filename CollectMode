@@ -80,13 +80,13 @@ public class CollectMode {
 		System.out.printf("%s를 야생으로 보냅니다! 잘가!\n", plus[select].getpmonName());
 		for (int i = 0; i < plus.length; i++) {
 		    if (i != select) { // 삭제할 인덱스가 아닌 경우
-		        Pm[i].pmonName = plus[i].pmonName; // 배열 복사 
-		        Pm[i].pmonType = plus[i].pmonType;
-		        Pm[i].pmonLevel = plus[i].pmonLevel;
-		        Pm[i].MaxHp = plus[i].MaxHp;
-		        Pm[i].pmonHp = plus[i].pmonHp;
-		        Pm[i].pmonAttack = plus[i].pmonAttack;
-		        Pm[i].pmonEvolve = plus[i].pmonEvolve;
+		        Pm[i].setpmonName(plus[i].getpmonName()); // 배열 복사 
+		        Pm[i].setpmonType(plus[i].getpmonType());
+		        Pm[i].setpmonLevel(plus[i].getpmonLevel());
+		        Pm[i].setMaxHp(plus[i].getMaxHp());
+		        Pm[i].setpmonHp(plus[i].getpmonHp());
+		        Pm[i].setpmonAttack(plus[i].getpmonAttack());
+		        Pm[i].setpmonEvolve(plus[i].getpmonEvolve());
 		    }
 		}
 	} 
@@ -102,13 +102,13 @@ public class CollectMode {
 		return choicenum;
 	}
 	public void copylist(int i, int index, Pokemon Pm, Trainer Tr) {
-		Tr.mypmonLlist[i].pmonName = Pm.pmonLlist[index].pmonName;
-		Tr.mypmonLlist[i].pmonType = Pm.pmonLlist[index].pmonType;
-		Tr.mypmonLlist[i].pmonLevel = Pm.pmonLlist[index].pmonLevel;
-		Tr.mypmonLlist[i].MaxHp = Pm.pmonLlist[index].MaxHp;
-		Tr.mypmonLlist[i].pmonHp = Pm.pmonLlist[index].pmonHp;
-		Tr.mypmonLlist[i].pmonAttack = Pm.pmonLlist[index].pmonAttack;
-		Tr.mypmonLlist[i].pmonEvolve = Pm.pmonLlist[index].pmonEvolve;
+		Tr.mypmonLlist[i].setpmonName(Pm.pmonLlist[index].getpmonName());
+		Tr.mypmonLlist[i].setpmonType(Pm.pmonLlist[index].getpmonType());
+		Tr.mypmonLlist[i].setpmonLevel(Pm.pmonLlist[index].getpmonLevel());
+		Tr.mypmonLlist[i].setMaxHp(Pm.pmonLlist[index].getMaxHp());
+		Tr.mypmonLlist[i].setpmonHp(Pm.pmonLlist[index].getpmonHp());
+		Tr.mypmonLlist[i].setpmonAttack(Pm.pmonLlist[index].getpmonAttack());
+		Tr.mypmonLlist[i].setpmonEvolve(Pm.pmonLlist[index].getpmonEvolve());
 	}
 }
 
