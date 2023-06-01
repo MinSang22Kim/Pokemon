@@ -1,0 +1,234 @@
+package Pokemon;
+
+import java.util.Scanner;
+
+public class Pokemon {
+	public static Pokemon[] pmon;
+	Scanner scanner = new Scanner(System.in);
+
+	private String pmonName;
+	private String pmonType;
+	private int pmonLevel;
+	private int pmonHp;
+	private int pmonMaxHp;
+	private int pmonAttack;
+	private int pmonDefense;
+	private boolean pmonEvolve; // 진화 가능한지 판별
+
+	public Pokemon(String pmonname, String pmontype, int pmonlevel, int pmonhp, int pmonmaxhp, int pmonattack,
+			int pmondefense, boolean pmonevolve) {
+		this.pmonName = pmonname;
+		this.pmonType = pmontype;
+		this.pmonLevel = pmonlevel;
+		this.pmonHp = pmonhp;
+		this.pmonMaxHp = pmonmaxhp;
+		this.pmonAttack = pmonattack;
+		this.pmonDefense = pmondefense;
+		this.pmonEvolve = pmonevolve;
+	}
+
+	public static void makePmon() {
+		pmon = new Pokemon[69];
+		pmon[0] = new Pokemon("피죤", "노말", 1, 63, 63, 60, 55, true);
+		pmon[1] = new Pokemon("피죤투", "노말", 1, 83, 83, 80, 75, false);
+		pmon[2] = new Pokemon("꼬렛", "노말", 1, 30, 30, 56, 35, true);
+		pmon[3] = new Pokemon("레트라", "노말", 1, 55, 55, 81, 60, false);
+		pmon[4] = new Pokemon("메타몽", "노말", 1, 48, 48, 48, 48, false);
+		pmon[5] = new Pokemon("푸린", "노말", 1, 115, 115, 45, 20, true);
+		pmon[6] = new Pokemon("푸크린", "노말", 1, 140, 140, 70, 45, false);
+		pmon[7] = new Pokemon("나옹", "노말", 1, 40, 40, 45, 35, true);
+		pmon[8] = new Pokemon("페르시온", "노말", 1, 65, 65, 70, 60, false);
+		pmon[9] = new Pokemon("이브이", "노말", 1, 55, 55, 55, 50, false);
+		pmon[10] = new Pokemon("두두", "노말", 1, 35, 35, 85, 45, true);
+		pmon[11] = new Pokemon("두트리오", "노말", 1, 60, 60, 110, 70, false);
+		pmon[12] = new Pokemon("내루미", "노말", 1, 90, 90, 55, 75, false);
+		pmon[13] = new Pokemon("럭키", "노말", 1, 250, 250, 5, 35, false);
+		pmon[14] = new Pokemon("잠만보", "노말", 1, 160, 160, 110, 65, false);
+		pmon[15] = new Pokemon("이상해씨", "풀", 1, 45, 45, 49, 49, true);
+		pmon[16] = new Pokemon("이상해풀", "풀", 1, 60, 60, 62, 63, false);
+		pmon[17] = new Pokemon("뚜벅쵸", "풀", 1, 45, 45, 50, 55, true);
+		pmon[18] = new Pokemon("냄새꼬", "풀", 1, 65, 65, 65, 70, false);
+		pmon[19] = new Pokemon("모다피", "풀", 1, 50, 50, 75, 35, true);
+		pmon[20] = new Pokemon("우츠동", "풀", 1, 65, 65, 90, 50, false);
+		pmon[21] = new Pokemon("아라리", "풀", 1, 60, 60, 40, 80, true);
+		pmon[22] = new Pokemon("나시", "풀", 1, 95, 95, 95, 85, false);
+		pmon[23] = new Pokemon("덩쿠리", "풀", 1, 65, 65, 55, 115, false);
+		pmon[24] = new Pokemon("치코리타", "풀", 1, 45, 45, 49, 35, true);
+		pmon[25] = new Pokemon("베이리프", "풀", 1, 60, 60, 62, 80, false);
+		pmon[26] = new Pokemon("통통코", "풀", 1, 35, 35, 35, 40, true);
+		pmon[27] = new Pokemon("두코", "풀", 1, 55, 55, 45, 50, false);
+		pmon[28] = new Pokemon("세레비", "풀", 1, 100, 100, 100, 100, false);
+		pmon[29] = new Pokemon("모부기", "풀", 1, 55, 55, 68, 64, true);
+		pmon[30] = new Pokemon("수풀부기", "풀", 1, 75, 75, 89, 85, false);
+		pmon[31] = new Pokemon("도치마론", "풀", 1, 56, 56, 61, 65, true);
+		pmon[32] = new Pokemon("도치보구", "풀", 1, 61, 61, 78, 95, false);
+		pmon[33] = new Pokemon("꼬부기", "물", 1, 44, 44, 48, 65, true);
+		pmon[34] = new Pokemon("어니부기", "물", 1, 59, 59, 63, 80, false);
+		pmon[35] = new Pokemon("고라파덕", "물", 1, 50, 50, 52, 48, true);
+		pmon[36] = new Pokemon("골덕", "물", 1, 80, 80, 82, 78, false);
+		pmon[37] = new Pokemon("발챙이", "물", 1, 40, 40, 50, 40, true);
+		pmon[38] = new Pokemon("슈룩쟁이", "물", 1, 65, 65, 65, 65, false);
+		pmon[39] = new Pokemon("왕눈해", "물", 1, 40, 40, 40, 35, true);
+		pmon[40] = new Pokemon("독파리", "물", 1, 80, 80, 70, 65, false);
+		pmon[41] = new Pokemon("야돈", "물", 1, 90, 90, 65, 65, true);
+		pmon[42] = new Pokemon("야도란", "물", 1, 70, 70, 75, 110, false);
+		pmon[43] = new Pokemon("쥬쥬", "물", 1, 65, 65, 45, 55, true);
+		pmon[44] = new Pokemon("쥬레곤", "물", 1, 90, 90, 70, 80, false);
+		pmon[45] = new Pokemon("셀러", "물", 1, 30, 30, 65, 100, true);
+		pmon[46] = new Pokemon("파르셀", "물", 1, 50, 50, 95, 180, false);
+		pmon[47] = new Pokemon("크랩", "물", 1, 30, 30, 105, 90, true);
+		pmon[48] = new Pokemon("캉크랩", "물", 1, 55, 55, 130, 115, false);
+		pmon[49] = new Pokemon("쏘드라", "물", 1, 30, 30, 40, 70, true);
+		pmon[50] = new Pokemon("시드라", "물", 1, 55, 55, 65, 95, false);
+		pmon[51] = new Pokemon("잉어킹", "물", 1, 20, 20, 10, 55, true);
+		pmon[52] = new Pokemon("갸라도스", "물", 1, 95, 95, 125, 79, false);
+		pmon[53] = new Pokemon("파이리", "불", 1, 39, 39, 62, 43, true);
+		pmon[54] = new Pokemon("리자드", "불", 1, 58, 58, 64, 58, false);
+		pmon[55] = new Pokemon("식스테일", "불", 1, 38, 38, 41, 40, true);
+		pmon[56] = new Pokemon("나인테일", "불", 1, 73, 73, 76, 75, false);
+		pmon[57] = new Pokemon("가디", "불", 1, 55, 55, 70, 45, true);
+		pmon[58] = new Pokemon("윈디", "불", 1, 90, 90, 110, 80, false);
+		pmon[59] = new Pokemon("포니타", "불", 1, 50, 50, 85, 55, true);
+		pmon[60] = new Pokemon("날쌩마", "불", 1, 65, 65, 100, 70, false);
+		pmon[61] = new Pokemon("마그마", "불", 1, 65, 65, 95, 57, false);
+		pmon[62] = new Pokemon("부스터", "불", 1, 65, 65, 130, 60, false);
+		pmon[63] = new Pokemon("파이어", "불", 1, 90, 90, 100, 90, false);
+		pmon[64] = new Pokemon("마그마그", "불", 1, 40, 40, 40, 40, true);
+		pmon[65] = new Pokemon("마그카르고", "불", 1, 50, 50, 50, 120, false);
+		pmon[66] = new Pokemon("마그비", "불", 1, 45, 45, 75, 37, false);
+		pmon[67] = new Pokemon("브케인", "불", 1, 39, 39, 52, 43, true);
+		pmon[68] = new Pokemon("마그케인", "불", 1, 58, 58, 64, 58, false);
+	}
+
+	// 메소드 get : 속성을 조회
+	public String getName() {
+		return pmonName;
+	}
+
+	public void setName(String pmonname) {
+		this.pmonName = pmonname;
+	}
+
+	public String getType() {
+		return pmonType;
+	}
+
+	public void setType(String pmontype) {
+		this.pmonType = pmontype;
+	}
+
+	public int getPmonLevel() {
+		return pmonLevel;
+	}
+
+	public void setPmonLevel(int pmonlevel) {
+		this.pmonLevel = pmonlevel;
+	}
+
+	public int getHp() {
+		return pmonHp;
+	}
+
+	public void setHp(int pmonhp) {
+		if (pmonhp <= 0) {
+			this.pmonHp = 0;
+			return;
+		}
+		this.pmonHp = pmonhp;
+	}
+
+	public int getAttack() {
+		return pmonAttack;
+	}
+
+	public void setAttack(int pmonattack) {
+		this.pmonAttack = pmonattack;
+	}
+
+	public int getDefense() {
+		return pmonDefense;
+	}
+
+	public void setDefense(int pmondefense) {
+		this.pmonDefense = pmondefense;
+	}
+
+	public int getMaxHp() {
+		return pmonMaxHp;
+	}
+
+	public void setMaxHp(int pmonMaxHp) {
+		this.pmonMaxHp = pmonMaxHp;
+	}
+
+	public boolean getPmonEvolve() {
+		return pmonEvolve;
+	}
+
+	public boolean setPmonEvolve(boolean pmonevolve) {
+		return this.pmonEvolve = pmonevolve;
+	}
+
+	public static Pokemon copyPmon(Pokemon p) {
+		String name = p.getName();
+		String type = p.getType();
+		int level = p.getPmonLevel();
+		int hp = p.getHp();
+		int maxHp = p.getMaxHp();
+		int attack = p.getAttack();
+		int defense = p.getDefense();
+		boolean evolve = p.getPmonEvolve();
+
+		Pokemon np = new Pokemon(name, type, level, hp, maxHp, attack, defense, evolve);
+
+		return np;
+
+	}
+
+	public static void levelUp(Pokemon pk) {
+		pk.setPmonLevel(pk.getPmonLevel() + 1);
+		pk.setAttack((pk.getAttack() + 2));
+		pk.setDefense(pk.getDefense() + 2);
+		pk.setMaxHp(pk.getMaxHp() + 3);
+		pk.setHp(pk.getMaxHp());
+		// 스펙 업
+	}
+
+	public static void status(Pokemon pk) {
+		System.out.println("이름 : " + pk.getName());
+		System.out.println("속성 : " + pk.getType());
+		System.out.println("레벨 : " + pk.getPmonLevel());
+		System.out.println("체력 : " + pk.getHp());
+		System.out.println("공격력 : " + pk.getAttack());
+		System.out.println("방어력 : " + pk.getDefense());
+		System.out.println("=============================");
+	}
+
+	// evolve 진화가능여부 판단후
+	public void evolve(Pokemon pk) { // Trainer 클래스 mypmonList에서 가져옴.
+		if (!pk.getPmonEvolve()) {
+			System.out.println("진화할 수 없는 포켓몬입니다.");
+			return;
+		}
+		if (pk.getPmonLevel() >= 5) {
+			for (int k = 0; k < pmon.length; k++) {
+				if (pk.getName().equals(pmon[k].getName())) {
+					Pokemon evolvedPmon = copyPmon(pmon[k + 1]); // 다음 진화된 포켓몬 객체
+					pk.setName(evolvedPmon.getName());
+					pk.setType(evolvedPmon.getType());
+					pk.setPmonLevel(evolvedPmon.getPmonLevel());
+					pk.setHp(evolvedPmon.getHp());
+					pk.setMaxHp(evolvedPmon.getMaxHp());
+					pk.setAttack(evolvedPmon.getAttack());
+					pk.setDefense(evolvedPmon.getDefense());
+					pk.setPmonEvolve(evolvedPmon.getPmonEvolve());
+					System.out.println("==========진화 후 결과==========");
+					pk.status(pk);
+					return;
+				}
+			}
+		} else
+			System.out.println("진화하기엔 레벨이 부족합니다");
+	}
+
+}
