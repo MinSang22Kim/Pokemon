@@ -1,0 +1,328 @@
+package Trainer;
+
+import java.util.Scanner;
+
+import Pokemon.Pokemon;
+
+public class Trainer {
+	static Scanner sc = new Scanner(System.in);
+
+	private String trainerName;
+	private int trainerCandy = 0;
+	private int trainerLevel = 1;
+	private int trainerMonsterBall = 0;
+	private int trainerPotion = 0;
+	private int trainerMoney = 0;
+	private int trainerCatchCount = 0;
+	private int trainerWinCount = 0;
+	private int trainerCandyCount = 0;
+	private int pmindex = 0;
+
+	public Pokemon[] myPmonList = new Pokemon[3];
+
+	public Trainer(String name) {
+		this.trainerName = name;
+	}
+
+	public Trainer(String name, int candy, int level, int monsterBall, int potion, int money, int catchCount,
+			int winCount, int candyCount) {
+		this.setTrainerName(name);
+		this.setTrainerCandy(candy);
+		this.setTrainerLevel(level);
+		this.setTrainerMonsterBall(monsterBall);
+		this.setTrainerPotion(potion);
+		this.setTrainerMoney(money);
+		this.setTrainerCatchCount(catchCount);
+		this.setTrainerWinCount(winCount);
+		this.setTrainerCandyCount(candyCount);
+	}
+
+	public void addMyPmonList(Pokemon p) {
+		myPmonList[pmindex] = Pokemon.copyPmon(p);
+		System.out.println("\n" + myPmonList[pmindex].getName() + "을 내 포켓몬 리스트에 추가 완료!");
+		pmindex++;
+		if (pmindex > 3) {
+			System.out.println("꽉 차있으므로 내 포켓몬리스트에 추가 할 수 없습니다!");
+		}
+	}
+
+//set 메소드
+	public void setTrainerName(String name) {
+		this.trainerName = name;
+	}
+
+	public void setTrainerCatchCount(int catchCount) {
+		this.trainerCatchCount = catchCount;
+	}
+
+	public void setTrainerWinCount(int winCount) {
+		this.trainerWinCount = winCount;
+	}
+
+	public void setTrainerCandyCount(int candyCount) {
+		this.trainerCandyCount = candyCount;
+	}
+
+	public void setTrainerCandy(int candy) {
+		this.trainerCandy = candy;
+	}
+
+	public void setTrainerLevel(int level) {
+		this.trainerLevel = level;
+	}
+
+	public void setTrainerMonsterBall(int monsterBall) {
+		if (monsterBall <= 0) {
+			this.trainerMonsterBall = 0;
+			return;
+		} else if (monsterBall >= 30) {
+			this.trainerMonsterBall = 30;
+			System.out.println("포켓몬 볼을 30개 이상 소지할 수 없습니다.");
+		}
+		this.trainerMonsterBall = monsterBall;
+	}
+
+	public void setTrainerPotion(int potion) {
+		if (potion <= 0) {
+			this.trainerPotion = 0;
+			return;
+		}
+		this.trainerPotion = potion;
+	}
+
+	public void setTrainerMoney(int money) {
+		if (money <= 0) {
+			this.trainerMoney = 0;
+			return;
+		}
+		this.trainerMoney = money;
+	}
+
+//set메소드
+	public int getTrainerCandy() {
+		return this.trainerCandy;
+	}
+
+	public String getTrainerName() {
+		return this.trainerName;
+	}
+
+	public int getTrainerLevel() {
+		return this.trainerLevel;
+	}
+
+	public int getTrainerMonsterBall() {
+		return this.trainerMonsterBall;
+	}
+
+	public int getTrainerPotion() {
+		return this.trainerPotion;
+	}
+
+	public int getTrainerMoney() {
+		return this.trainerMoney;
+	}
+
+	public int getTrainerCatchCount() {
+		return this.trainerCatchCount;
+	}
+
+	public int getTrainerWinCount() {
+		return this.trainerWinCount;
+	}
+
+	public int getTrainerCandyCount() {
+		return this.trainerCandyCount;
+	}
+
+	public void feedCandy() {
+
+		if (this.getTrainerCandy() <= 0) {
+			System.out.println("\n캔디가 부족합니다!");
+			return;
+		} else {
+			System.out.println("\n=====소유한 포켓몬 리스트=====");
+			for (int i = 0; i < this.myPmonList.length; i++) {
+				if (this.myPmonList[i] == null)
+					continue;
+				System.out.println((i + 1) + ". " + this.myPmonList[i].getName());
+			} // 1.트레이너가 가진 포켓몬 리스트 출력
+			System.out.println("");
+			System.out.print("캔디를 주고 싶은 포켓몬의 번호를 입력하세요: ");
+			int j = sc.nextInt() - 1;
+			// 2.사용자로부터 선택한 포켓몬 입력
+
+			this.myPmonList[j].levelUp(this.myPmonList[j]);
+			System.out.println("\n" + this.myPmonList[j].getName() + "에게 캔디를 주었습니다.");
+			this.setTrainerCandy(this.getTrainerCandy() - 1);
+		} // 4.결과 출력
+	}// (기능)내가 가진 포켓몬 출력 및 선택 그리고 반환 3. (사용법)트레이너 모드에서 1 누르면 사용
+
+	public void trainerLevelUp() {
+		this.setTrainerLevel(this.getTrainerLevel() + 1);
+		System.out
+				.println("플레이어의 레벨이 " + (this.getTrainerLevel() - 1) + "-> " + this.getTrainerLevel() + " 로 상승하였습니다!");
+	}// (기능)트레이너 레벨업 및 레벨 출력 (사용법)수집과 배틀 끝난 후 사용
+
+	public void showInventory() {
+		System.out.println("======내 인벤토리======");
+		System.out.printf("@ 캔디     : %5d개\n", this.getTrainerCandy());
+		System.out.printf("@ 포션     : %5d개\n", this.getTrainerPotion());
+		System.out.printf("@ 레벨     :%5d레벨\n", this.getTrainerLevel());
+		System.out.printf("@ 소지금    : %5d원\n", this.getTrainerMoney());
+		System.out.printf("@ 포켓몬볼  : %5d개\n\n", this.getTrainerMonsterBall());
+
+	}
+
+// (기능)가지고 있는 1.캔디 2.몬스터볼 3.포션 출력 (사용법)트레이너 모드에서 2 누르면 사용
+
+	public void getAchievement() {
+		System.out.println("========보유 업적========");
+		if (this.getTrainerCandyCount() < 10 && this.getTrainerCatchCount() < 10 && this.getTrainerLevel() < 10
+				&& this.getTrainerWinCount() < 10) {
+			System.out.println("달성한 업적이 없습니다.");
+		}
+		if (this.getTrainerCandyCount() >= 10) {
+			System.out.println("'캔디 좀 먹어볼까?' 업적 달성!!");
+		}
+		if (this.getTrainerCandyCount() >= 20) {
+			System.out.println("'모으지 마세요 포켓몬에게 양보하세요' 업적 달성!!!");
+		}
+		if (this.getTrainerCandyCount() >= 30) {
+			System.out.println("'이가 다썩겠어!' 업적 달성!!!");
+		}
+		if (this.getTrainerCatchCount() >= 10) {
+			System.out.println("'수집을 시작해볼까?' 업적 달성!!!");
+		}
+		if (this.getTrainerCatchCount() >= 20) {
+			System.out.println("'나는야 포켓몬 수집가!' 업적 달성!!!");
+		}
+		if (this.getTrainerCatchCount() >= 30) {
+			System.out.println("'나는야 포켓몬 마스터!' 업적 달성!!!");
+		}
+		if (this.getTrainerLevel() >= 10) {
+			System.out.println("'초보 트레이너' 업적 달성!!!");
+		}
+		if (this.getTrainerLevel() >= 20) {
+			System.out.println("'중급 트레이너' 업적 달성!!!");
+		}
+		if (this.getTrainerLevel() >= 30) {
+			System.out.println("'고수 트레이너' 업적 달성!!!");
+		}
+
+		if (this.getTrainerWinCount() >= 10) {
+			System.out.println("'좀 치네?' 업적 달성!!!");
+		}
+		if (this.getTrainerWinCount() >= 20) {
+			System.out.println("'당신은 싸움왕' 업적 달성!!!");
+		}
+		if (this.getTrainerWinCount() >= 30) {
+			System.out.println("'배틀의 신' 업적 달성!!!");
+		}
+		System.out.println("");
+	}
+
+	public void evolvePm() {
+		System.out.println("진화 할 포켓몬을 선택하세요.");
+		for (int i = 0; i < this.myPmonList.length; i++) {
+			if (this.myPmonList[i] == null)
+				continue;
+			System.out.println((i + 1) + ". " + this.myPmonList[i].getName());
+		}
+		if (this.myPmonList[0] != null && this.myPmonList[1] == null && this.myPmonList[2] == null) {
+			while (true) {
+				int num = sc.nextInt();
+				switch (num) {
+				case 1:
+					this.myPmonList[0].evolve(this.myPmonList[0]);
+					return;
+				default:
+					System.out.println("잘못된 입력입니다!");
+					break;
+				}
+			}
+		}
+		if (this.myPmonList[0] != null && this.myPmonList[1] != null && this.myPmonList[2] == null) {
+			while (true) {
+				int num = sc.nextInt();
+				switch (num) {
+				case 1:
+					this.myPmonList[0].evolve(this.myPmonList[0]);
+					return;
+				case 2:
+					this.myPmonList[1].evolve(this.myPmonList[1]);
+					return;
+				default:
+					System.out.println("잘못된 입력입니다!");
+					break;
+				}
+			}
+		}
+		if (this.myPmonList[0] != null && this.myPmonList[1] != null && this.myPmonList[2] != null) {
+			while (true) {
+				int num = sc.nextInt();
+				switch (num) {
+				case 1:
+					this.myPmonList[0].evolve(this.myPmonList[0]);
+					return;
+				case 2:
+					this.myPmonList[1].evolve(this.myPmonList[1]);
+					return;
+				case 3:
+					this.myPmonList[2].evolve(this.myPmonList[2]);
+					return;
+				default:
+					System.out.println("잘못된 입력입니다!");
+					break;
+				}
+			}
+		}
+	}
+
+	public void status() {
+		System.out.println("\n========== < 포켓몬 능력치 > ==========");
+
+		for (int i = 0; i < myPmonList.length; i++) {
+			if (myPmonList[i] != null) {
+				System.out.println("포켓몬 " + (i + 1) + " 정보:");
+				Pokemon.copyPmon(myPmonList[i]).status(myPmonList[i]);
+				System.out.println("");
+			} else {
+				continue;
+			}
+		}
+	}// (추가)내가 가진 포켓몬의 status 출력
+
+	public void trainerMode() {
+		// 선택지 6개
+		do {
+			System.out.println("=================트레이너 모드=================");
+			System.out.println("0. 종료하기\n1. 캔디 먹이기\n2. 내 가방\n3. 보유 업적\n4. 보유 포켓몬\n5. 진화하기");
+			int choice = sc.nextInt();
+			switch (choice) {
+			case 0:
+				System.out.println("메인화면으로 복귀합니다!\n");
+				return;
+			case 1:
+				this.feedCandy();
+				break;
+			case 2:
+				this.showInventory();
+				break;
+			case 3:
+				this.getAchievement();
+				break;
+			case 4:
+				this.status();
+				break;
+			case 5:
+				this.evolvePm();
+				break;
+			default:
+				System.out.println("잘못된 메뉴 선택입니다.");
+				System.out.println("=========================================\n");
+				break;
+			}
+		} while (true);
+	}
+}
