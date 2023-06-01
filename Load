@@ -1,0 +1,50 @@
+package SaveLoad;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import Pokemon.Pokemon;
+import Trainer.Trainer;
+
+public class Load {
+
+	public static Trainer load() {
+		String filePath = "TrainerData.csv";
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line = reader.readLine();
+			String[] row = line.split(",");
+
+			String name = row[0];
+			int candy = Integer.parseInt(row[1]);
+			int level = Integer.parseInt(row[2]);
+			int monsterBall = Integer.parseInt(row[3]);
+			int potion = Integer.parseInt(row[4]);
+			int money = Integer.parseInt(row[5]);
+			int catchCount = Integer.parseInt(row[6]);
+			int winCount = Integer.parseInt(row[7]);
+			int candyCount = Integer.parseInt(row[8]);
+			Trainer tr = new Trainer(name, candy, level, monsterBall, potion, money, catchCount, winCount, candyCount);
+			int pkcount = Integer.parseInt(row[9]);
+
+			int makepmindex = 10;
+			for (int i = 0; i < pkcount; i++) {
+				String pmonName = row[makepmindex + 0];
+				String pmonType = row[makepmindex + 1];
+				int pmonLevel = Integer.parseInt(row[makepmindex + 2]);
+				int pmonHp = Integer.parseInt(row[makepmindex + 3]);
+				int pmonMaxHp = Integer.parseInt(row[makepmindex + 4]);
+				int pmonAttack = Integer.parseInt(row[makepmindex + 5]);
+				int pmonDefense = Integer.parseInt(row[makepmindex + 6]);
+				boolean pmonEvolve = Boolean.parseBoolean(row[makepmindex + 7]);
+				makepmindex += 8;
+				tr.myPmonList[i] = new Pokemon(pmonName, pmonType, pmonLevel, pmonHp, pmonMaxHp, pmonAttack,
+						pmonDefense, pmonEvolve);
+			}
+			return tr;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+}
