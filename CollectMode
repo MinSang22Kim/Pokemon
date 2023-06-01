@@ -1,115 +1,235 @@
-import java.util.Scanner;
+package CollectMode;
+
 import java.util.Random;
+import java.util.Scanner;
+
+import BattleMode.BattleMode;
+import Pokemon.Pokemon;
+import Trainer.Trainer;
+
 public class CollectMode {
-	public int adventure(Pokemon[] Pm){
-		Scanner scanner = new Scanner(System.in);
+	static Scanner scanner = new Scanner(System.in);
+
+	public static void adventure(Trainer Tr) {
 		Random random = new Random();
-		int delay = random.nextInt(2000)+1000; // 1~3초 딜레이 시간
-		int index = random.nextInt(40); // 40마리 포켓몬 배열 인덱스 중 랜덤한 포켓몬
-		System.out.println("지우가 포켓몬을 찾으러 모험을 떠납니다!");
-		System.out.println("포켓몬을 찾는 중입니다...");
-		try {
-			Thread.sleep(delay); // 실행중인 스레드를 1~3초만큼 딜레이
-		} catch (InterruptedException e) {				
-			e.printStackTrace(); 
-			} // 주어진 딜레이 시간이 모두 지나기 전에 인터럽트 발생시 예외처리
-		System.out.printf("야생 포켓몬 %s을/를 발견했다!!!\n", Pm[index].getpmonName());
-		choicePokemon(Pm);
-		return index;
-	}
-	public boolean catchPercentage(int index, Pokemon Pm) { // 야생포켓몬 인덱스를 받아서 메소드로 최대체력, 현재체력 가져와서 뺴
-	    double probability = Math.random(); // 랜덤수 0.0 ~ 1.0 저장 
-	    int successProbability = Pm[index].gethp()/Pm[index].getmaxHp();
-	    if (probability * 100 < successProbability*100) {
-	        return true;
-	    } else {
-	        return false;
-	    }
-	}
-	public void catchPokemon(int index, Trainer Tr, Pokemon Pm) {
-		// 야생포켓몬과의 배틀 도중 메뉴에서 메소드 호출시 여기로 옴()
-		Scanner scanner = new Scanner(System.in);
-		Random random = new Random();
-		int max_length = Tr.mypmonList.length + 1;
-		Pokemon[] plus = new Pokemon[max_length]; // 복사할 배열 생성
-		for (int i = 0; i < max_length; i++) {
-			plus[i] = Tr.mypmonLlist[i];
-		} // 내 포켓몬 배열을 plus에 복사
-		System.out.println("가랏!! 몬스터볼!!");	Tr.trainerMonsterBall--;
-		if(catchPercentage(index, pmonList[index]) { /// 매개변수 다시 보고 고치기 
-			boolean isFull = true; // 내 포켓몬 배열 꽉찼는지 확인하는 변수 
-			for (int i = 0; i < Tr.mypmonLlist.length; i++) {
-			    if (Tr.mypmonLlist[i] == null) {
-			        isFull = false;
-			        break;
-			    } // 하나의 인덱스라도 비어있다면 변수는 false
-			}
-			System.out.printf("%s! 넌 내꺼야!\n", Pm.pmonLlist[index].getpmonName());
-			Tr.trainerCatchCount++;
-			for(int i = 0; i < Tr.mypmonLlist.length; i++) {
-				if(Tr.mypmonLlist[i] == null) {
-					copylist(i, index, Pm, Tr);
-				}
-			} // 비어있는 내 포켓몬 배열에 잡은 포켓몬 저장 
-			if(isFull) {
-				System.out.println("포켓몬이 가득찼다!");
-				releasePokemon(Tr.mypmonLlist, plus);
-				System.out.printf("%s! 넌 내꺼야!\n", Pm.pmonLlist[index].getpmonName());
-				for(int i = 0; i < Tr.mypmonLlist.length; i++) {
-					if(Tr.mypmonLlist[i] == null) {
-						copylist(i, index, Pm, Tr);
+		int choicenum, select;
+		int delay = random.nextInt(500) + 700; // 딜레이 시간
+		int index = random.nextInt(69); // 포켓몬 배열 인덱스 중 랜덤한 포켓몬
+		while (true) {
+			System.out.printf("%s(레벨: %d)가 모험을 떠납니다!\n", Tr.getTrainerName(), Tr.getTrainerLevel());
+			System.out.println("보유 포켓몬을 확인하려면 1번, 모험을 떠나려면 2번을 눌러주세요!\n");
+			select = scanner.nextInt();
+			if (select == 1) {
+				for (int i = 0; i < 3; i++) {
+					if (Tr.myPmonList[i] == null) {
+						continue;
+					} else {
+						Pokemon.status(Tr.myPmonList[i]);
 					}
-				} // 비어있는 내 포켓몬 배열에 잡은 포켓몬 저장 
+				}
+				break;
+			} else if (select == 2) {
+				System.out.printf("%s가 포켓몬을 찾으러 모험을 떠납니다!\n", Tr.getTrainerName());
+				System.out.printf("포켓몬을 찾는 중입니다");
+				try {
+					for (int i = 0; i < 3; i++) {
+						System.out.printf("... ");
+						Thread.sleep(delay); // 실행중인 스레드를 1~3초만큼 딜레이
+					}
+					System.out.println("!");
+
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} // 주어진 딜레이 시간이 모두 지나기 전에 인터럽트 발생시 예외처리
+				System.out.printf("야생 포켓몬 %s을/를 발견했다!!!\n\n", Pokemon.pmon[index].getName());
+				choicenum = choicePokemon(Tr);
+				wildBattle(Tr, index, choicenum);
+				break;
+			} else {
+				System.out.println("잘못된 입력입니다!\n");
+				continue;
 			}
+		}
+
+	}
+
+	public static int choicePokemon(Trainer Tr) {
+		int choicenum;
+		System.out.println("어떤 포켓몬으로 싸울까?");
+		for (int i = 0; i < Tr.myPmonList.length; i++) {
+			if (Tr.myPmonList[i] == null) {
+				continue;
+			}
+			System.out.printf("%d. %s\n", i + 1, Tr.myPmonList[i].getName());
+		}
+		choicenum = scanner.nextInt() - 1;
+		System.out.printf("%s! 너로 정했다!!!\n", Tr.myPmonList[choicenum].getName());
+		return choicenum;
+	}
+
+	public static void wildBattle(Trainer Tr, int wildpmon_index, int mypmon_index) {
+		int select, weather, randlevel, result = 0, battleturn = 0;
+		Pokemon wildpm = Pokemon.copyPmon(Pokemon.pmon[wildpmon_index]);
+		Random random = new Random();
+		randlevel = random.nextInt(10) ; // 랜덤레벨 부여
+		for(int i = 0; i < randlevel; i++) {
+			Pokemon.levelUp(wildpm);
+		}
+		weather = random.nextInt(3);
+		switch (weather) {
+		case 0:
+			System.out.println("햇빛이 쨍쨍합니다.");
+			System.out.println("불타입이 강해지고/ 물,풀타입이 약해진다!\n");
+			break;
+		case 1:
+			System.out.println("매우 습합니다.");
+			System.out.println("물,풀타입이 강해지고/ 불타입이 약해진다!\n");
+			break;
+		case 2:
+			System.out.println("날씨가 평범합니다.");
+			System.out.println("노말타입이 강해진다!\n");
+			break;
+		}
+		wildpm.setHp(wildpm.getMaxHp());
+		System.out.printf("========%s vs %s========\n", wildpm.getName(), Tr.myPmonList[mypmon_index].getName());
+		while (true) {
+			System.out.printf("%s(레벨: %d, HP: %d, 타입: %s)\n",  Tr.myPmonList[mypmon_index].getName(), Tr.myPmonList[mypmon_index].getPmonLevel(),
+					Tr.myPmonList[mypmon_index].getHp(), Tr.myPmonList[mypmon_index].getType());
+			System.out.printf("%s(레벨: %d, HP: %d, 타입: %s)\n\n", wildpm.getName(), wildpm.getPmonLevel(), wildpm.getHp(), wildpm.getType());
+			if (battleturn == 0) {
+				System.out.println("어떤 행동을 할까?");
+				System.out.println("1. 공격하기\n2. 포션 사용\n3. 포켓몬 교체\n4. 몬스터볼 던지기\n5. 도망가기\n");
+				select = scanner.nextInt();
+				switch (select) {
+				case 1:
+					BattleMode.attack(Tr.myPmonList[mypmon_index], wildpm, battleturn, weather);
+					battleturn = 1;
+					break;
+				case 2:
+					if(Tr.getTrainerPotion() <= 0) {
+						System.out.println("포션이 없습니다!");
+						break;
+					}
+					BattleMode.usePotion(Tr, Tr.myPmonList[mypmon_index]);
+					battleturn = 1;
+					break;
+				case 3:
+					BattleMode.switchPmon(Tr.myPmonList, mypmon_index);
+					battleturn = 1;
+					break;
+				case 4:
+					if(Tr.getTrainerLevel() <= wildpm.getPmonLevel()) {
+						System.out.println("트레이너 레벨보다 높은 포켓몬은 잡을 수 없습니다!");
+						break;
+					}
+					if (Tr.getTrainerMonsterBall() <= 0) {
+						System.out.println("몬스터볼이 부족합니다!");
+						break;
+					}
+					if (catchPokemon(wildpmon_index, Tr) == 1) {
+						BattleMode.getResult(Tr, 1);
+						System.out.println("전투를 종료합니다..!\n");
+						return;
+					}
+					battleturn = 1;
+					break;
+				case 5:
+					System.out.println("무사히 도망쳤다..!\n");
+					return;
+				default:
+					System.out.println("잘못된 입력입니다. 다시 입력해주세요!\n");
+					break;
+				}
+			} else {
+				BattleMode.attack(Tr.myPmonList[mypmon_index], wildpm, battleturn, weather);
+				battleturn = 0;
+			}
+			if (wildpm.getHp() <= 0) {
+				System.out.println(wildpm.getName() + " 이 처치되었습니다!");
+				System.out.println("전투를 종료합니다!");
+				result = 1;
+				break;
+			}
+			if (Tr.myPmonList[mypmon_index].getHp() <= 0) {
+				System.out.println(Tr.myPmonList[mypmon_index].getName() + " 이 처치되었습니다!");
+				System.out.println("전투를 종료합니다!");
+				result = -1;
+				break;
+			}
+		}
+		BattleMode.getResult(Tr, result);
+	}
+
+	public static boolean catchPercentage(int index) { // 야생포켓몬 인덱스를 받아서 메소드로 최대체력, 현재체력 가져와서 뺴
+		double probability = Math.random() * 100 + 50; // 랜덤수 0.0 ~ 1.0 저장
+		int successProbability = 100 * Pokemon.pmon[index].getHp() / Pokemon.pmon[index].getMaxHp();
+		if (probability > successProbability) {
+			return true;
 		} else {
-			System.out.println("앗! 잡지 못했다!");	
+			return false;
 		}
 	}
-	public void releasePokemon(Pokemon[] Pm, Pokemon[] plus) { // 이 뒤부터는 원래 다시복려고,,temp
-		Scanner scanner = new Scanner(System.in);
+
+	public static int catchPokemon(int index, Trainer Tr) {
+		// 야생포켓몬과의 배틀 도중 메뉴에서 메소드 호출시 여기로 옴()
+		int Is_catch = 0; // 못잡으면 0 반
+		Random random = new Random();
+		int max_length = Tr.myPmonList.length + 1;
+		Pokemon[] plus = new Pokemon[max_length]; // 복사할 배열 생성
+		for (int i = 0; i < max_length; i++) {
+			if (i == Tr.myPmonList.length || Tr.myPmonList[i] == null)
+				break;
+			plus[i] = Pokemon.copyPmon(Tr.myPmonList[i]);
+		} // 내 포켓몬 배열을 plus에 복사
+		System.out.println("가랏!! 몬스터볼!!");
+		Tr.setTrainerMonsterBall(Tr.getTrainerMonsterBall() - 1);
+		if (catchPercentage(index)) {
+			Is_catch = 1;
+			boolean isFull = true; // 내 포켓몬 배열 꽉찼는지 확인하는 변수
+			for (int i = 0; i < Tr.myPmonList.length; i++) {
+				if (Tr.myPmonList[i] == null) {
+					isFull = false;
+					break;
+				} // 하나의 인덱스라도 비어있다면 변수는 false
+			}
+			System.out.printf("축하합니다! %s를 잡았습니다!\n", Pokemon.pmon[index].getName());
+			Tr.setTrainerCatchCount(Tr.getTrainerCatchCount() + 1);
+			for (int i = 0; i < 3; i++) {
+				if (Tr.myPmonList[i] == null) {
+					Tr.myPmonList[i] = Pokemon.copyPmon(Pokemon.pmon[index]);
+					break;
+				}
+			} // 비어있는 내 포켓몬 배열에 잡은 포켓몬 저장
+			for (int i = 0; i < max_length; i++) {
+				if (plus[i] == null) {
+					plus[i] = Pokemon.copyPmon(Pokemon.pmon[index]);
+					break;
+				}
+			} // 비어있는 내 포켓몬 배열에 잡은 포켓몬 저장
+			if (isFull) {
+				System.out.println("\n포켓몬이 가득찼다!");
+				releasePokemon(Tr.myPmonList, plus);
+				Is_catch = 1;
+			}
+		} else {
+			System.out.println("앗! 잡지 못했다!");
+		}
+		return Is_catch;
+	}
+
+	public static void releasePokemon(Pokemon[] Pm, Pokemon[] plus) {
 		int select;
 		System.out.println("어떤 포켓몬을 버리시겠습니까? 번호를 입력해주세요.");
-		for(int i = 0; i < plus.length; i++) {
-			if(plus[i] == null) {
-				System.out.printf("%d. 비어있음(버릴수없음)\n", i+1);
+		for (int i = 0; i < plus.length; i++) {
+			if (plus[i] == null) {
+				System.out.printf("%d. 비어있음(버릴수없음)\n", i + 1);
 			} else {
-			System.out.printf("%d. %s\n", i+1, plus[i].getpmonName());
+				System.out.printf("%d. %s\n", i + 1, plus[i].getName());
 			}
 		}
 		select = scanner.nextInt() - 1;
-		System.out.printf("%s를 야생으로 보냅니다! 잘가!\n", plus[select].getpmonName());
-		for (int i = 0; i < plus.length; i++) {
-		    if (i != select) { // 삭제할 인덱스가 아닌 경우
-		        Pm[i].setpmonName(plus[i].getpmonName()); // 배열 복사 
-		        Pm[i].setpmonType(plus[i].getpmonType());
-		        Pm[i].setpmonLevel(plus[i].getpmonLevel());
-		        Pm[i].setMaxHp(plus[i].getMaxHp());
-		        Pm[i].setpmonHp(plus[i].getpmonHp());
-		        Pm[i].setpmonAttack(plus[i].getpmonAttack());
-		        Pm[i].setpmonEvolve(plus[i].getpmonEvolve());
-		    }
-		}
-	} 
-	public int choicePokemon(Pokemon[] Pm) {
-		Scanner scanner = new Scanner(System.in);
-		int choicenum;
-		System.out.println("어떤 포켓몬으로 싸울까?");
-		for (int i = 0; i < Pm.length; i++) {
-			System.out.printf("%d. %s\n", i+1, Pm[i].getpmonName());
-		}
-		choicenum = scanner.nextInt()-1;
-		System.out.printf("%s! 너로 정했다!!!\n", Pm[choicenum].getpmonName());
-		return choicenum;
-	}
-	public void copylist(int i, int index, Pokemon Pm, Trainer Tr) {
-		Tr.mypmonLlist[i].setpmonName(Pm.pmonLlist[index].getpmonName());
-		Tr.mypmonLlist[i].setpmonType(Pm.pmonLlist[index].getpmonType());
-		Tr.mypmonLlist[i].setpmonLevel(Pm.pmonLlist[index].getpmonLevel());
-		Tr.mypmonLlist[i].setMaxHp(Pm.pmonLlist[index].getMaxHp());
-		Tr.mypmonLlist[i].setpmonHp(Pm.pmonLlist[index].getpmonHp());
-		Tr.mypmonLlist[i].setpmonAttack(Pm.pmonLlist[index].getpmonAttack());
-		Tr.mypmonLlist[i].setpmonEvolve(Pm.pmonLlist[index].getpmonEvolve());
+		System.out.printf("%s를 야생으로 보냅니다! 잘가!\n", plus[select].getName());
+		System.out.printf("%s (을/를) 포켓몬리스트에 추가했습니다!!\n", plus[Pm.length].getName());
+		Pm[select] = Pokemon.copyPmon(plus[Pm.length]);
 	}
 }
-
-// 추가기능으로 포켓몬 대기시간, 체력상태에 따른포획률 증가 추가 
