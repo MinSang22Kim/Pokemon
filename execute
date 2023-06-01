@@ -1,0 +1,136 @@
+package execute;
+
+import java.util.Scanner;
+
+import BattleMode.BattleMode;
+import CollectMode.CollectMode;
+import Pokemon.Pokemon;
+import PokemonCenter.PokemonCenter;
+import SaveLoad.Load;
+import SaveLoad.Save;
+import Trainer.Trainer;
+
+public class execute {
+	public static void main(String[] args) {
+		Pokemon.makePmon();
+		Scanner sc = new Scanner(System.in);
+		int n = 0; // 1이면 새로 만들기 2이면 이어하기
+		System.out.println("=======================================================================");
+		System.out.println("                                  ,'\\\n"
+				+ "    _.----.        ____         ,'  _\\   ___    ___     ____\n"
+				+ "_,-'       `.     |    |  /`.   \\,-'    |   \\  /   |   |    \\  |`.\n"
+				+ "\\      __    \\    '-.  | /   `.  ___    |    \\/    |   '-.   \\ |  |\n"
+				+ " \\.    \\ \\   |  __  |  |/    ,','_  `.  |          | __  |    \\|  |\n"
+				+ "   \\    \\/   /,' _`.|      ,' / / / /   |          ,' _`.|     |  |\n"
+				+ "    \\     ,-'/  /   \\    ,'   | \\/ / ,`.|         /  /   \\  |     |\n"
+				+ "     \\    \\ |   \\_/  |   `-.  \\    `'  /|  |    ||   \\_/  | |\\    |\n"
+				+ "      \\    \\ \\      /       `-.`.___,-' |  |\\  /| \\      /  | |   |\n"
+				+ "       \\    \\ `.__,'|  |`-._    `|      |__| \\/ |  `.__,'|  | |   |\n"
+				+ "        \\_.-'       |__|    `-._ |              '-.|     '-.| |   |\n"
+				+ "                                `'                            '-._|");
+		System.out.println("============================포켓몬고 프로젝트==============================");
+		System.out.println("계속하려면 엔터키를 눌러주세요...!");
+		String enterKey = sc.nextLine();
+
+		System.out.println("1. 새 게임\n2. 불러오기");
+		n = sc.nextInt();
+		if (n == 1) {
+			System.out.println("플레이어 이름을 설정해 주세요!");
+			String name = sc.next();
+			Trainer tr = new Trainer(name);
+			System.out.printf("\n%s님의 모험을 시작합니다!\n", tr.getTrainerName());
+			System.out.println("소지금 10000원, 포켓몬볼 5개, 포션 5개를 스타터팩으로 증정합니다!\n");
+			tr.setTrainerMoney(10000);
+			tr.setTrainerPotion(5);
+			tr.setTrainerMonsterBall(5);
+			System.out.println("스타팅 포켓몬을 선택하세요 !\n1. 이상해씨\n2. 꼬부기\n3. 파이리");
+			int snum = sc.nextInt();
+			switch (snum) {
+			case 1:
+				tr.addMyPmonList(Pokemon.pmon[15]);
+				break;
+			case 2:
+				tr.addMyPmonList(Pokemon.pmon[33]);
+				break;
+			case 3:
+				tr.addMyPmonList(Pokemon.pmon[53]);
+				break;
+			}
+			do {
+				System.out.println("\n실행하고 싶은 모드의 숫자를 눌러주세요!");
+				System.out.println("0. 게임 종료\n1. 대전모드\n2. 수집모드\n3. 트레이너\n4. 포켓몬센터\n5. 저장\n");
+				int number = sc.nextInt();
+				switch (number) {
+				case 0:
+					System.out.println("게임을 종료합니다!");
+					return;
+				case 1:
+					BattleMode.battle(tr);
+					break;
+				case 2:
+					CollectMode.adventure(tr);
+					break;
+				case 3:
+					tr.trainerMode();
+					break;
+				case 4:
+					PokemonCenter.shop(tr); // shop안에 상점, 회복 다 있음.
+					break;
+				case 5:
+					Save.save(tr);
+					break;
+				default:
+					System.out.println("잘못된 입력입니다!\n 다시 입력해주세요!n");
+					break;
+				}
+			} while (true);
+
+		}
+
+		else if (n == 2) {
+			Trainer ltr = Load.load();
+			System.out.println("\n불러온 트레이너 정보 !");
+			System.out.printf("이름 : %s\n레벨 : %d\n소지금 : %d\n소지한 몬스터볼 : %d\n소지한 캔디 : %d\n소지한 포션 : %d\n",
+					ltr.getTrainerName(), ltr.getTrainerLevel(), ltr.getTrainerMoney(), ltr.getTrainerMonsterBall(),
+					ltr.getTrainerCandy(), ltr.getTrainerPotion());
+			System.out.printf("보유 포켓몬 : ");
+			for (int i = 0; i < ltr.myPmonList.length; i++) {
+				if (ltr.myPmonList[i] == null)
+					continue;
+				else {
+					System.out.printf("%s /", ltr.myPmonList[i].getName());
+				}
+			}
+			System.out.println();
+			System.out.println();
+			do {
+				System.out.println("실행하고 싶은 모드의 숫자를 눌러주세요!");
+				System.out.println("0. 게임 종료\n1. 대전모드\n2. 수집모드\n3. 트레이너\n4. 포켓몬센터\n5. 저장\n");
+				int number = sc.nextInt();
+				switch (number) {
+				case 0:
+					System.out.println("게임을 종료합니다!");
+					return;
+				case 1:
+					BattleMode.battle(ltr);
+					break;
+				case 2:
+					CollectMode.adventure(ltr);
+					break;
+				case 3:
+					ltr.trainerMode();
+					break;
+				case 4:
+					PokemonCenter.shop(ltr); // shop안에 상점, 회복 다 있음.
+					break;
+				case 5:
+					Save.save(ltr);
+					break;
+				default:
+					System.out.println("잘못된 입력입니다!\n 다시 입력해주세요!n");
+					break;
+				}
+			} while (true);
+		}
+	}
+}
