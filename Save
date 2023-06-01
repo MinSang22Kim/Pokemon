@@ -1,0 +1,90 @@
+package SaveLoad;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import Trainer.Trainer;
+
+public class Save {
+	public static void save(Trainer tr) {
+		String filePath = "TrainerData.csv";
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+
+			String name = tr.getTrainerName();
+			String candy = Integer.toString(tr.getTrainerCandy());
+			String level = Integer.toString(tr.getTrainerLevel());
+			String monsterBall = Integer.toString(tr.getTrainerMonsterBall());
+			String potion = Integer.toString(tr.getTrainerPotion());
+			String money = Integer.toString(tr.getTrainerMoney());
+			String catchCount = Integer.toString(tr.getTrainerCatchCount());
+			String winCount = Integer.toString(tr.getTrainerWinCount());
+			String candyCount = Integer.toString(tr.getTrainerCandyCount());
+
+			writer.write(name);
+			writer.write(",");
+			writer.write(candy);
+			writer.write(",");
+			writer.write(level);
+			writer.write(",");
+			writer.write(monsterBall);
+			writer.write(",");
+			writer.write(potion);
+			writer.write(",");
+			writer.write(money);
+			writer.write(",");
+			writer.write(catchCount);
+			writer.write(",");
+			writer.write(winCount);
+			writer.write(",");
+			writer.write(candyCount);
+			writer.write(",");
+
+			int pkcount1 = 0; // myPmomList에 몇개의 포켓몬 들어있는지
+			for (int i = 0; i < tr.myPmonList.length; i++) {
+				if (tr.myPmonList[i] != null)
+					pkcount1++;
+				else
+					continue;
+			}
+			String pkcount2 = Integer.toString(pkcount1);
+			writer.write(pkcount2);
+			writer.write(",");
+
+			for (int i = 0; i < tr.myPmonList.length; i++) {
+				if (tr.myPmonList[i] != null) {
+					String pmonName = tr.myPmonList[i].getName();
+					String pmonType = tr.myPmonList[i].getType();
+					String pmonLevel = Integer.toString(tr.myPmonList[i].getPmonLevel());
+					String pmonHp = Integer.toString(tr.myPmonList[i].getHp());
+					String pmonMaxHp = Integer.toString(tr.myPmonList[i].getMaxHp());
+					String pmonAttack = Integer.toString(tr.myPmonList[i].getAttack());
+					String pmonDefense = Integer.toString(tr.myPmonList[i].getDefense());
+					String pmonEvolve = Boolean.toString(tr.myPmonList[i].getPmonEvolve());
+					writer.write(pmonName);
+					writer.write(",");
+					writer.write(pmonType);
+					writer.write(",");
+					writer.write(pmonLevel);
+					writer.write(",");
+					writer.write(pmonHp);
+					writer.write(",");
+					writer.write(pmonMaxHp);
+					writer.write(",");
+					writer.write(pmonAttack);
+					writer.write(",");
+					writer.write(pmonDefense);
+					writer.write(",");
+					writer.write(pmonEvolve);
+					writer.write(",");
+				} else if (tr.myPmonList[i] == null) {
+					continue;
+				}
+			}
+
+			System.out.println("저장이 완료 되었습니다.\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
