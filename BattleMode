@@ -1,0 +1,422 @@
+package BattleMode;
+
+import java.util.Random;
+import java.util.Scanner;
+
+import Pokemon.Pokemon;
+import Trainer.Trainer;
+
+public class BattleMode {
+	static Scanner sc = new Scanner(System.in);
+
+	public static Pokemon[] makeSet(int dif) {
+		Pokemon[] set = new Pokemon[3];
+		Random rd = new Random();
+		int num = 0;
+		switch (dif) {
+		
+		case 1:
+			for (int i = 0; i < 3; i++) {
+				num = rd.nextInt(15); // 0~14사이 난수 생성
+				set[i] = Pokemon.copyPmon(Pokemon.pmon[num]); // 똑같은포켓몬 나왔을때 조건 추가해야할듯 , 여기에 윤종이가 만든 복사 메소드 사용
+				for (int j = 0; j < i; j++) {
+					if (set[i].getName().equals(set[j].getName())) {
+						i--;
+						break;
+					} // 중복해서 뽑히는경우 다시 뽑게하는 코드
+				}
+			}
+			break;
+		case 2:
+			for (int i = 0; i < 3; i++) {
+				num = rd.nextInt(18) + 15; // 15~32사이 난수 생성, 여기에 윤종이가 만든 복사 메소드 사용
+				set[i] = Pokemon.copyPmon(Pokemon.pmon[num]);
+				for (int j = 0; j < i; j++) {
+					if (set[i].getName().equals(set[j].getName())) {
+						i--;
+						break;
+					}
+				}
+			}
+			break;
+		case 3:
+			for (int i = 0; i < 3; i++) {
+				num = rd.nextInt(20) + 32; // 33~52사이 난수 생성, 여기에 윤종이가 만든 복사 메소드 사용
+				set[i] = Pokemon.copyPmon(Pokemon.pmon[num]);
+				for (int j = 0; j < i; j++) {
+					if (set[i].getName().equals(set[j].getName())) {
+						i--;
+						break;
+					}
+				}
+			}
+			break;
+		case 4:
+			for (int i = 0; i < 3; i++) {
+				num = rd.nextInt(53) + 16; // 53~68사이 난수 생성, 여기에 윤종이가 만든 복사 메소드 사용
+				set[i] = Pokemon.copyPmon(Pokemon.pmon[num]);
+				for (int j = 0; j < i; j++) {
+					if (set[i].getName().equals(set[j].getName())) {
+						i--;
+						break;
+					}
+				}
+			}
+			break;
+		case 5:
+			for (int i = 0; i < 3; i++) {
+				num = rd.nextInt(69); // 0~68사이 난수 생성, 여기에 윤종이가 만든 복사 메소드 사용
+				set[i] = Pokemon.copyPmon(Pokemon.pmon[num]);
+				for (int j = 0; j < i; j++) {
+					if (set[i].getName().equals(set[j].getName())) {
+						i--;
+						break;
+					}
+				}
+			}
+			break;
+		}
+		return set;
+	}
+
+	public static void attack(Pokemon mPm, Pokemon aiPm, int bTurn, int weather) {
+		int damage;
+		switch (bTurn) {
+		case 0:
+			damage = loseHp(mPm, aiPm, weather);
+			aiPm.setHp(aiPm.getHp() - damage);
+			System.out.println("      나의 공격 턴입니다!");
+			System.out.println(" " + aiPm.getName() + "(이/가) " + damage + "의 피해를 입었습니다!");
+			break;
+		case 1:
+			damage = loseHp(aiPm, mPm, weather);
+			mPm.setHp(mPm.getHp() - damage);
+			System.out.println(" " + mPm.getName() + "(이/가) " + damage + " 의 피해를 입었습니다!");
+			break;
+		}
+	}
+
+	public static void usePotion(Trainer tr, Pokemon pm) {
+		if (tr.getTrainerPotion() == 0) {
+			System.out.println("\n====================================");
+			System.out.println("           사용할 포션이 없습니다!");
+			System.out.println("====================================\n");
+		} else {
+			System.out.println("\n====================================");
+			pm.setHp(pm.getMaxHp());
+			System.out.println("   " + pm.getName() + " 의 체력이 가득 회복되었습니다!");
+			tr.setTrainerPotion(tr.getTrainerPotion() - 1);
+			System.out.println("====================================\n");
+		}
+	}
+
+	public static int loseHp(Pokemon p1, Pokemon p2, int weather) {
+		return ((int) (Math.floor(10 * ((double) p1.getAttack() / p2.getDefense()) * effect(p1, p2, weather)) + 1));
+	}
+
+	public static double effect(Pokemon p1, Pokemon p2, int weather) {
+		double value = 1;
+		switch (p1.getType()) {
+		case "노말":
+			break;
+		case "불":
+			if (p2.getType().equals("불"))
+				value = 0.8;
+			if (p2.getType().equals("물"))
+				value = 0.8;
+			if (p2.getType().equals("풀"))
+				value = 1.25;
+			break;
+		case "물":
+			if (p2.getType().equals("불"))
+				value = 1.25;
+			if (p2.getType().equals("물"))
+				value = 0.8;
+			if (p2.getType().equals("풀"))
+				value = 0.8;
+			break;
+		case "풀":
+			if (p2.getType().equals("불"))
+				value = 0.8;
+			if (p2.getType().equals("물"))
+				value = 1.25;
+			if (p2.getType().equals("풀"))
+				value = 0.8;
+			break;
+		default:
+			break;
+		}
+
+		switch (weather) {
+		case 0:
+			if (p1.getType().equals("불"))
+				value += 0.1;
+			if (p1.getType().equals("물"))
+				value -= 0.1;
+			if (p1.getType().equals("풀"))
+				value -= 0.1;
+			break;
+		case 1:
+			if (p1.getType().equals("물"))
+				value += 0.1;
+			if (p1.getType().equals("풀"))
+				value += 0.1;
+			if (p1.getType().equals("불"))
+				value -= 0.1;
+			break;
+		case 2:
+			if (p1.getType().equals("노말"))
+				value += 0.1;
+			break;
+		}
+
+		return value;
+	}
+
+	public static void switchPmon(Pokemon[] pm, int fpmnum) {
+		System.out.println("\n====================================");
+		for (int i = 0; i < 3; i++) {
+			if (pm[fpmnum] == null)
+				continue;
+			if (i == fpmnum) {
+			} else {
+				System.out.println(i + " : " + pm[i].getName());
+			}
+		}
+		System.out.println("\n  교체할 포켓몬의 번호를 입력하세요. (종료 : -1)");
+		int num = Integer.parseInt(sc.nextLine());
+		while (true) {
+			if (num != -1 && num < 0 || num > 2) {
+				System.out.println();
+				System.out.println("\n       유효하지 않은 번호입니다! 번호를 다시 입력해주세요!");
+				num = Integer.parseInt(sc.nextLine());
+				continue;
+			} else if (num == -1) {
+				System.out.println("        포켓몬 교체를 종료합니다!");
+				System.out.println("====================================");
+				return;
+			} else if (pm[num].getHp() <= 0 || num == fpmnum) {
+				System.out.println();
+				System.out.println("교체 할 수없는 포켓몬입니다! 번호를 다시 입력해주세요!");
+				num = Integer.parseInt(sc.nextLine());
+				continue;
+			} else {
+				System.out.println("         교체가 완료 되었습니다!");
+				break;
+			}
+		}
+
+		Pokemon temp;// 두 인덱스 바꾸기 위해 임시로 포켓몬 넣어둘곳
+		temp = pm[fpmnum];
+		pm[fpmnum] = pm[num];
+		pm[num] = temp;
+		System.out.println("====================================\n");
+	}
+
+	public static void getResult(Trainer tr, int result) {
+		// 1:승리,-1:패배
+		switch (result) {
+		case 1:
+			tr.setTrainerWinCount(tr.getTrainerWinCount() + 1);
+			tr.setTrainerCandy(tr.getTrainerCandy() + 2);
+			tr.setTrainerCandyCount(tr.getTrainerCandyCount() + 2);
+			tr.setTrainerMoney(tr.getTrainerMoney() + 1000);
+			tr.trainerLevelUp();
+			System.out.println("           승리 보상을 흭득하였습니다!");
+			System.out.println("(캔디 +2개, 트레이너 레벨 +1, +1000원)");
+			System.out.println("==============================================\n");
+			break;
+		case -1:
+			tr.setTrainerCandy(tr.getTrainerCandy() + 1);
+			tr.setTrainerCandyCount(tr.getTrainerCandyCount() + 1);
+			tr.setTrainerMoney(tr.getTrainerMoney() + 500);
+			System.out.println("            패배 보상을 흭득하였습니다!");
+			System.out.println("            (캔디 +1개, +500원)");
+			System.out.println("==============================================\n");
+			break;
+		// 보상수치 정해야 할듯.
+		}
+	}
+
+	public static void battle(Trainer tr) {
+		int rnum, mnum, result;
+		int mpmnum = 0;
+		int ainum = 0;
+		int tnum = 0; // 턴, 0이면 내 턴 1이면 적 턴
+		int weather; // 0 : 햇빛쨍쨍 > 불타입 유리/물,풀타입불리 1: 습합 > 물,풀타입 유리/불타입불리 2:평범 > 노말타입 유리
+
+		for (int i = 0; i < tr.myPmonList.length; i++) {
+			if (tr.myPmonList[i] == null) {
+				System.out.println();
+				System.out.println("포켓몬 3마리 소지해야 배틀에 참여할 수 있습니다!\n\n");
+				return;
+			}
+		}
+
+		if (tr.myPmonList[0].getHp() == 0 || tr.myPmonList[1].getHp() == 0 || tr.myPmonList[2].getHp() == 0) {
+			System.out.println();
+			System.out.println("체력이 0인 포켓몬이 있으므로 배틀에 참여하실 수 없습니다!\n\n");
+			return;
+		}
+
+		Random rd = new Random();
+		Pokemon[] aiPm = new Pokemon[3];
+		System.out.println();
+		System.out.println();
+		System.out.println("========장소(번호)를 선택해주세요========");
+		System.out.println("1. 일반 도로");
+		System.out.println("2. 초원 ");
+		System.out.println("3. 바다");
+		System.out.println("4. 화산");
+		System.out.println("5. 카오스");
+		System.out.println("====================================");
+
+		rnum = Integer.parseInt(sc.nextLine());
+		switch (rnum) {
+		case 1:
+			aiPm = makeSet(1);
+			System.out.println("\n====================================");
+			System.out.println("          일반 도로로 이동합니다.");
+			System.out.println("====================================");
+			break;// 노말타입만 나옴
+		case 2:
+			aiPm = makeSet(2);
+			System.out.println();
+			System.out.println("====================================");
+			System.out.println("          초원으로 이동합니다.");
+			System.out.println("====================================");
+			break; // 풀타입만 나옴
+		case 3:
+			aiPm = makeSet(3);
+			System.out.println();
+			System.out.println("====================================");
+			System.out.println("          바다로 이동합니다.");
+			System.out.println("====================================");
+			break;// 물타입만 나옴
+		case 4:
+			aiPm = makeSet(4);
+			System.out.println();
+			System.out.println("====================================");
+			System.out.println("          화산으로 이동합니다.");
+			System.out.println("====================================");
+			break;// 불타입만 나옴
+		case 5:
+			aiPm = makeSet(5);
+			System.out.println();
+			System.out.println("====================================");
+			System.out.println("           카오스로 이동합니다.");
+			System.out.println("====================================");
+			break;// 모든타입 포켓몬 다 섞여서 나옴
+		}
+		int delay = rd.nextInt(4000) + 1000; // 1~5초 딜레이 시간
+		try {
+			Thread.sleep(delay); // 실행중인 스레드를 1~5초만큼 딜레이
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} // 주어진 딜레이 시간이 모두 지나기 전에 인터럽트 발생시 예외처리
+
+		weather = rd.nextInt(3); // 0~2난수 생성
+		switch (weather) {
+		case 0:
+			System.out.println("\n====================================");
+			System.out.println("           햇빛이 쨍쩅합니다.");
+			System.out.println("불타입이 강해지고 / 물,풀타입이 약해질거 같군요!!");
+			System.out.println("====================================\n");
+			break;
+		case 1:
+			System.out.println("\n====================================");
+			System.out.println("            매우 습합니다.");
+			System.out.println("물,풀타입이 강해지고 / 불타입이 약해질거 같군요!!");
+			System.out.println("====================================\n");
+			break;
+		case 2:
+			System.out.println("\n====================================");
+			System.out.println("           날씨가 평범합니다.");
+			System.out.println("         노말타입이 강해질거 같군요!!");
+			System.out.println("====================================\n");
+			break;
+		}
+
+		System.out.println("====================================");
+		System.out.println("            대전을 시작합니다!");
+		System.out.println("====================================\n\n");
+
+		while (true) {// 내 포켓몬은 무조건 0번 인덱스의 포켓몬이 처음 싸우는걸로 고정이고, 적 포켓몬은
+						// 0,1,2순으로 체력 0되면 바뀌는 구조
+			System.out.println("====================================================");
+			System.out.println("현재 내 포켓몬( 이름 : " + tr.myPmonList[mpmnum].getName() + ", HP : "
+					+ tr.myPmonList[mpmnum].getHp() + ", 타입 : " + tr.myPmonList[mpmnum].getType() + ")");
+			System.out.println("현재 적 포켓몬( 이름 : " + aiPm[ainum].getName() + ", HP : " + aiPm[ainum].getHp() + ", 타입 : "
+					+ aiPm[ainum].getType() + ")");
+			System.out.println("===================================================\n\n");
+
+			if (tnum == 0) {
+				System.out.println("===============================");
+				System.out.println("내 선택 턴입니다 !");
+				System.out.println("1. 공격하기\n2. 포션을 사용\n3. 포켓몬 교체\n4. 도망");
+				System.out.println("==============================\n");
+				mnum = Integer.parseInt(sc.nextLine());
+				switch (mnum) {
+				case 1:
+					System.out.println("\n===============================");
+					attack(tr.myPmonList[mpmnum], aiPm[ainum], tnum, weather);
+					tnum = 1;
+					System.out.println("===============================");
+					break;
+				case 2:
+					usePotion(tr, tr.myPmonList[mpmnum]);
+					tnum = 1;
+					break;
+				case 3:
+					switchPmon(tr.myPmonList, mpmnum);
+					tnum = 1;
+					break;
+				case 4:
+					System.out.println("\n===============================");
+					System.out.println("          도망칩니다!");
+					System.out.println("===============================\n");
+					return;
+				}
+			} else {
+				System.out.println("===============================");
+				System.out.println("        적의 공격 턴입니다!");
+				attack(tr.myPmonList[mpmnum], aiPm[ainum], tnum, weather);
+				System.out.println("===============================");
+				tnum = 0;
+			}
+
+			if (aiPm[ainum].getHp() <= 0) {
+				System.out.println("\n\n===============================");
+				System.out.println("적 포켓몬 " + aiPm[ainum].getName() + "(이/가) 처치되었습니다!!!");
+				ainum++;
+				if (ainum >= 3) {
+					result = 1;
+					System.out.println();
+					System.out.println("\n\n===============================");
+					System.out.println("       전투를 종료합니다!!!");
+					System.out.println("===============================\n");
+					getResult(tr, result);
+					return;
+				}
+				System.out.println("적 포켓몬 " + aiPm[ainum].getName() + "(이/가) 등장했습니다!");
+				System.out.println("===============================\n");
+			}
+			if (tr.myPmonList[mpmnum].getHp() <= 0) {
+				System.out.println("\n\n===============================");
+				System.out.println("내 포켓몬 " + tr.myPmonList[mpmnum].getName() + "(이/가) 처치되었습니다!!!");
+				mpmnum++;
+				if (mpmnum >= 3) {
+					result = -1;
+					System.out.println();
+					System.out.println("===============================");
+					System.out.println("       전투를 종료합니다!!!");
+					System.out.println("===============================\n");
+					getResult(tr, result);
+					return;
+				}
+				System.out.println("내 포켓몬 " + tr.myPmonList[mpmnum].getName() + "(이/가) 등장했습니다!");
+				System.out.println("===============================\n");
+			}
+		}
+	}
+}
